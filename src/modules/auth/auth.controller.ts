@@ -2,6 +2,7 @@ import { Controller, Body, Post, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AdminDto } from '../admins/dto/admin.dto';
+import { DoesAdminExist } from '../../core/guards/doesAdminExist.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -13,6 +14,7 @@ export class AuthController {
         return await this.authService.login(req.user);
     }
 
+    @UseGuards(DoesAdminExist)
     @Post('signup')
     async signUp(@Body() admin: AdminDto) {
         return await this.authService.create(admin);
