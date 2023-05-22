@@ -12,10 +12,27 @@ export class RequestsService {
         return await this.requestRepository.create<Request>(request);
     }
 
-    async findAll(): Promise<Request[]> {
-        return await this.requestRepository.findAll<Request>({
-        	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
-    	});
+    async findAll(adminId?: number, status?:['Active','Resolved']): Promise<Request[]> {
+        if(adminId && status){
+            return await this.requestRepository.findAll<Request>({
+                where: {adminId,status},
+            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
+    	    });
+        }else if(adminId){
+            return await this.requestRepository.findAll<Request>({
+                where: {adminId},
+            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
+    	    });
+        }else if(status){
+            return await this.requestRepository.findAll<Request>({
+                where: {status},
+            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
+    	    });
+        }else{
+            return await this.requestRepository.findAll<Request>({
+            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
+    	    });
+        }
     }
 
     async findOne(id: number): Promise<Request> {

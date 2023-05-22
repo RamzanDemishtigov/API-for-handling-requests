@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, UseGuards, Request, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestsService } from './requests.service';
 import { Request as RequestEntity } from './request.entity';
@@ -9,9 +9,9 @@ export class RequestsController {
     constructor(private readonly requestService: RequestsService) { }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get()
-    async findAll(@Param('status') status: string) {
-        return await this.requestService.findAll();
+    @Get('')
+    async findAll(@Query('adminId') adminId?: number,@Query('status') status?: ['Active','Resolved']) {
+        return await this.requestService.findAll(adminId,status);
     }
 
     @UseGuards(AuthGuard('jwt'))
