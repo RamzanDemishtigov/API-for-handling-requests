@@ -36,13 +36,13 @@ export class Request extends Model<Request> {
     })
     comment: string;
 
-    /*@ForeignKey(() => Admin)
+    @ForeignKey(() => Admin)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
     })
     adminId: number;
 
     @BelongsTo(() => Admin)
-    admin: Admin;*/
+    admin: Admin;
 }

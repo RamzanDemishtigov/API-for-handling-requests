@@ -33,8 +33,8 @@ export class RequestsController {
 
     @UseGuards(AuthGuard('jwt'))
     @Put(':id')
-    async update(@Param('id') id: number, @Body() request: RequestDto): Promise<RequestEntity> {
-        const { numberOfAffectedRows, updatedRequest } = await this.requestService.update(id, request);
+    async update(@Param('id') id: number, @Body() request: RequestDto,@Request() req): Promise<RequestEntity> {
+        const { numberOfAffectedRows, updatedRequest } = await this.requestService.update(id, request,req);
 
         if (numberOfAffectedRows === 0) {
             throw new NotFoundException('This Request doesn\'t exist');

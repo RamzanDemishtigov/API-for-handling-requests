@@ -18,19 +18,19 @@ export class RequestsService {
     	});
     }
 
-    async findOne(id): Promise<Request> {
+    async findOne(id: number): Promise<Request> {
         return await this.requestRepository.findOne({
         	where: { id },
         	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
     	});
     }
 
-    async delete(id) {
+    async delete(id: number) {
         return await this.requestRepository.destroy({ where: { id } });
     }
 
-    async update(id: number, request: any) {
-        const [numberOfAffectedRows, [updatedRequest]] = await this.requestRepository.update( request, { where: { id }, returning: true });
+    async update(id: number, request: any, req: any) {
+        const [numberOfAffectedRows, [updatedRequest]] = await this.requestRepository.update( {...request,adminId: req.user.id}, { where: { id }, returning: true });
 
         return { numberOfAffectedRows, updatedRequest };
     }
