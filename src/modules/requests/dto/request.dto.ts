@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsEmail,IsOptional } from 'class-validator';
 
 enum Status {
     ACTIVE = 'Active',
@@ -13,7 +13,7 @@ export class RequestDto {
     @IsEmail()
     readonly email: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(Status,{
         message:'status must be either Active or Resolved'
     })
@@ -22,6 +22,5 @@ export class RequestDto {
     @IsNotEmpty()
     readonly message: string;
 
-    @IsNotEmpty()
     readonly comment: string;
 }

@@ -33,7 +33,7 @@ export class RequestsController {
 
     @UseGuards(AuthGuard('jwt'))
     @Put(':id')
-    async update(@Param('id') id: number, @Body() request: RequestDto,@Request() req): Promise<RequestEntity> {
+    async update(@Param('id') id: number, @Body() request: {status?:['Active','Resolved'],comment:string},@Request() req): Promise<RequestEntity> {
         const { numberOfAffectedRows, updatedRequest } = await this.requestService.update(id, request,req);
 
         if (numberOfAffectedRows === 0) {
