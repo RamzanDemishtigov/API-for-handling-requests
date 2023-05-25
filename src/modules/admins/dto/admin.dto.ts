@@ -12,3 +12,13 @@ export class AdminDto {
     @MinLength(6)
     readonly password: string;
 }
+
+export class LoginAdminDto {
+    @IsNotEmpty()
+    @IsEmail()
+    readonly username: string;
+
+    @IsNotEmpty()
+    @MinLength(6)
+    readonly password: string;
+}

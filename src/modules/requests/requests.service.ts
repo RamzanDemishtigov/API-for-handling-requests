@@ -47,7 +47,7 @@ export class RequestsService {
     }
 
     async update(id: number, request: any, req: any) {
-        const [numberOfAffectedRows, [updatedRequest]] = await this.requestRepository.update( {...request,adminId: req.user.id}, { where: { id }, returning: true });
+        const [numberOfAffectedRows, [updatedRequest]] = await this.requestRepository.update( {...request,adminId: req.user.id,status:'Resolved'}, { where: { id }, returning: true });
 
         return { numberOfAffectedRows, updatedRequest };
     }

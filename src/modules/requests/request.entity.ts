@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Admin } from '../admins/admin.entity';
+import { Status } from './dto/request.dto';
 
 @Table
 export class Request extends Model<Request> {
@@ -21,7 +22,7 @@ export class Request extends Model<Request> {
         defaultValue: 'Active',
         allowNull: false,
     })
-    status: string;
+    status: Status;
 
     @Column({
         type: DataType.TEXT,
