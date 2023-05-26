@@ -4,7 +4,8 @@ import { RequestsService } from './requests.service';
 import { Request as RequestEntity } from './request.entity';
 import { CreateRequestDto,RequestDto, UpdateRequestDto } from './dto/request.dto';
 import { ApiOperation,ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Status } from './dto/request.dto'; 
+import { Status } from './dto/request.dto';
+import { writeFile } from 'node:fs';
 
 @ApiTags('Requests')
 @Controller('requests')
@@ -56,6 +57,11 @@ export class RequestsController {
             throw new NotFoundException('This Request doesn\'t exist');
         }
 
+        writeFile(`dist/${updatedRequest.name}Email`,`Здравствуйте, ${updatedRequest.name}, вам пришел ответ на вашу заявку-${updatedRequest.message}   
+        ${updatedRequest.comment}`,(err)=>{
+            if(err) console.log(err)
+        })
+        
         return updatedRequest;
     }
 
