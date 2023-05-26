@@ -3,6 +3,7 @@ import { Request } from './request.entity';
 import { RequestDto } from './dto/request.dto';
 import { Admin } from '../admins/admin.entity';
 import { REQUEST_REPOSITORY } from '../../core/constants';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class RequestsService {
@@ -12,27 +13,24 @@ export class RequestsService {
         return await this.requestRepository.create<Request>(request);
     }
 
-    async findAll(adminId?: number, status?:['Active','Resolved']): Promise<Request[]> {
-        if(adminId && status){
-            return await this.requestRepository.findAll<Request>({
-                where: {adminId,status},
-            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
-    	    });
-        }else if(adminId){
-            return await this.requestRepository.findAll<Request>({
-                where: {adminId},
-            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
-    	    });
-        }else if(status){
-            return await this.requestRepository.findAll<Request>({
-                where: {status},
-            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
-    	    });
-        }else{
-            return await this.requestRepository.findAll<Request>({
-            	include: [{ model: Admin, attributes: { exclude: ['password'] } }],
-    	    });
+    async findAll(adminId?: number, status?:['Active','Resolved'], date?: string): Promise<Request[]> {
+        let whereClause = {};
+        if(adminId) {
+            whereClause['adminId'] = adminId;
         }
+        if(status) {
+            whereClause['status'] = status;
+        }
+        if(date) {
+            whereClause['createdAt'] = {
+            [Op.gte]: new Date(date),
+            [Op.lt]: new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
+            };
+        }
+        return await this.requestRepository.findAll({
+            where: whereClause,
+            include: [{ model: Admin, attributes: { exclude: ['password'] } }],
+        });
     }
 
     async findOne(id: number): Promise<Request> {

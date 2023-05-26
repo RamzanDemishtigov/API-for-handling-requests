@@ -11,14 +11,15 @@ import { Status } from './dto/request.dto';
 export class RequestsController {
     constructor(private readonly requestService: RequestsService) { }
 
-    @ApiOperation({ summary: "Searches all requests, supports two filters" })
+    @ApiOperation({ summary: "Searches all requests, supports three filters" })
     @ApiQuery({name:'status',enum:Status,required:false})
     @ApiQuery({name:'adminId',required:false})
+    @ApiQuery({name:'date',required:false})
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get('')
-    async findAll(@Query('adminId') adminId?: number, @Query('status') status?) {
-        return await this.requestService.findAll(adminId,status);
+    async findAll(@Query('adminId') adminId?: number, @Query('status') status?, @Query('date') date?) {
+        return await this.requestService.findAll(adminId,status,date);
     }
 
     @ApiOperation({ summary: "Searches request by id" })
